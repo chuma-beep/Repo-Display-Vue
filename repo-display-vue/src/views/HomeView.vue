@@ -1,5 +1,22 @@
 <template>
-  <div v-if="!state.apiData">Loading...</div>
+  <div v-if="!state.apiData" class="flex flex-wrap justify-center mb-10">
+    <div
+      class="animate-pulse bg-gray-200 dark:bg-gray-800 rounded-md p-4 md:p-12 w-full lg:w-3/5 mx-auto"
+    >
+      <div class="h-48 w-48 bg-gray-300 dark:bg-gray-700 rounded-full mx-auto lg:mx-0"></div>
+      <div class="lg:text-left">
+        <div
+          class="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 bg-gray-300 dark:bg-gray-700 bg-cover bg-center"
+        ></div>
+      </div>
+      <h1 class="mb-2 h-6 bg-gray-300 dark:bg-gray-700 rounded mt-4"></h1>
+      <p class="h-4 bg-gray-300 dark:bg-gray-700 rounded mt-2"></p>
+      <p class="h-4 bg-gray-300 dark:bg-gray-700 rounded mt-2"></p>
+      <p class="h-4 bg-gray-300 dark:bg-gray-700 rounded mt-2"></p>
+      <p class="h-4 bg-gray-300 dark:bg-gray-700 rounded mt-2"></p>
+    </div>
+  </div>
+
   <div v-else>
     <div class="max-w-4xl flex h-1/4 lg:h-1/2 flex-wrap mx-auto mb-32 mt-32 lg:mt-10 sm:mt-32">
       <div
@@ -54,3 +71,20 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+@keyframes skeleton-pulse {
+  0% {
+    background-color: rgba(209, 213, 219, 0.5);
+  }
+  50% {
+    background-color: rgba(209, 213, 219, 1);
+  }
+  100% {
+    background-color: rgba(209, 213, 219, 0.5);
+  }
+}
+.animate-pulse {
+  animation: skeleton-pulse 1.5s infinite;
+}
+</style>

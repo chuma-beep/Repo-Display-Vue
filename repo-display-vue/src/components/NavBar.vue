@@ -2,7 +2,7 @@
   <div class="lg:mb-32">
     <fwb-navbar class="shadow-lg fixed w-full z-10 top-0">
       <template #logo>
-        <fwb-navbar-logo alt="Flowbite logo" image-url="/public/favicon.png" link="#">
+        <fwb-navbar-logo alt="logo" image-url="/public/favicon.png" link="#">
           DevWisdom
         </fwb-navbar-logo>
       </template>
