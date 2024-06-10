@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import RepoList from "@/views/RepoList.vue";
+import RepoList from "@/components/RepoList.vue";
 import HomeView from "@/views/HomeView.vue";
+import RepoDetails from "@/components/RepoDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +17,13 @@ const router = createRouter({
       component: RepoList,
     },
     {
-      path: "/:pathMatch(.*)*",
+      path: "/repos/:owner/:repoName",
+      name: "repoDetails",
+      component: RepoDetails,
+      props: true,
+    },
+    {
+      path: "/:notFound",
       name: "NotFound",
       component: () => import("../views/NotFound.vue"),
     },

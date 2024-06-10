@@ -2,14 +2,16 @@
   <div class="lg:mb-32">
     <fwb-navbar class="shadow-lg fixed w-full z-10 top-0">
       <template #logo>
-        <fwb-navbar-logo alt="logo" image-url="/public/favicon.png" link="#">
-          DevWisdom
+        <fwb-navbar-logo alt="logo" image-url="src/assets/favicon.png" link="#">
+          <RouterLink to="/">DevWisdom</RouterLink>
         </fwb-navbar-logo>
       </template>
       <template #default="{ isShowMenu }">
         <fwb-navbar-collapse :is-show-menu="isShowMenu">
-          <fwb-navbar-link link="#">404 page</fwb-navbar-link>
-          <fwb-navbar-link link="#"> Error boundary </fwb-navbar-link>
+          <fwb-navbar-link>
+            <RouterLink to="/:notFound">404 Page</RouterLink>
+          </fwb-navbar-link>
+          <fwb-navbar-link> Error boundary </fwb-navbar-link>
         </fwb-navbar-collapse>
       </template>
       <template #menu-icon>
@@ -34,5 +36,5 @@
 
 <script setup>
 import { FwbNavbar, FwbNavbarCollapse, FwbNavbarLink, FwbNavbarLogo } from 'flowbite-vue'
+import { RouterLink } from 'vue-router'
 </script>
-a
