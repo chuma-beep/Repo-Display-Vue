@@ -72,7 +72,7 @@ export default {
     const loading = ref(true)
     const error = ref(null)
     const currentPage = ref(1)
-    const perPage = 6
+    const perPage = 9
     const paginatedData = ref([])
 
     const fetchData = () => {
