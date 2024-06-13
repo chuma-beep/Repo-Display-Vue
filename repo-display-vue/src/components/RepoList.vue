@@ -1,10 +1,34 @@
 <template>
   <div>
+    <!--search-->
+    <div class="search">
+      <fwb-input placeholder="search" v-model="input">
+        <template #prefix>
+          <svg
+            aria-hidden="true"
+            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </template>
+      </fwb-input>
+    </div>
+
     <div class="w-full flex justify-center mb-10">
       <fwb-pagination
         v-model="currentPage"
         :total-items="totalItems"
         @page-changed="handlePageChange"
+        :layout="'navigation'"
       ></fwb-pagination>
     </div>
 
@@ -27,7 +51,7 @@
 
     <div class="flex flex-wrap justify-center">
       <fwb-card
-        v-for="repo in paginatedData"
+        v-for="repo in filteredAndPaginatedData"
         :key="repo.id"
         href="#"
         class="m-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4"
@@ -58,14 +82,15 @@
 </template>
 
 <script>
-import { FwbCard, FwbPagination } from 'flowbite-vue'
+import { FwbCard, FwbPagination, FwbInput } from 'flowbite-vue'
 import { computed, watch, ref } from 'vue'
 
 export default {
   name: 'RepoList',
   components: {
     FwbCard,
-    FwbPagination
+    FwbPagination,
+    FwbInput
   },
   setup() {
     const data = ref([])
@@ -73,7 +98,7 @@ export default {
     const error = ref(null)
     const currentPage = ref(1)
     const perPage = 9
-    const paginatedData = ref([])
+    const input = ref('') // should be a string for search input
 
     const fetchData = () => {
       fetch('https://api.github.com/users/chuma-beep/repos')
@@ -100,14 +125,36 @@ export default {
       paginateData()
     })
 
-    //need to fix totalItems
     const totalItems = computed(() => data.value.length)
+
+    // Function to filter items based on the search input
+    const filteredData = computed(() => {
+      if (!input.value) {
+        return data.value
+      }
+      return data.value.filter((repo) =>
+        repo.name.toLowerCase().includes(input.value.toLowerCase())
+      )
+    })
 
     const paginateData = () => {
       const startIndex = (currentPage.value - 1) * perPage
       const endIndex = startIndex + perPage
-      paginatedData.value = data.value.slice(startIndex, endIndex)
+      paginatedData.value = filteredData.value.slice(startIndex, endIndex)
     }
+
+    const paginatedData = ref([])
+
+    //watch changes in filteredData and currentPage
+    watch([filteredData, currentPage], () => {
+      paginateData()
+    })
+
+    const filteredAndPaginatedData = computed(() => {
+      const startIndex = (currentPage.value - 1) * perPage
+      const endIndex = startIndex + perPage
+      return filteredData.value.slice(startIndex, endIndex)
+    })
 
     const handlePageChange = (newPage) => {
       currentPage.value = newPage
@@ -122,8 +169,9 @@ export default {
       currentPage,
       perPage,
       totalItems,
-      paginatedData,
-      handlePageChange
+      filteredAndPaginatedData,
+      handlePageChange,
+      input
     }
   }
 }
@@ -143,5 +191,11 @@ export default {
 }
 .animate-pulse {
   animation: skeleton-pulse 1.5s infinite;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8vh;
 }
 </style>
